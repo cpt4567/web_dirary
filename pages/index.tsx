@@ -1,8 +1,31 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import { useEffect } from 'react';
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
+
+  useEffect(() => {
+  
+    let video : any = document.querySelector("#videoElement");
+
+    let stream = new MediaStream() ;
+
+    let source = new MediaSource();
+    
+    if (navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ video: true })
+      .then( (stream) => {
+        video.srcObject = stream;
+      })
+      .catch( (err) => {
+        console.log("Something went wrong!");
+      });
+    }
+
+  }, [])
+  
+
   return (
     <div className={styles.container}>
       <Head>
@@ -15,6 +38,8 @@ export default function Home() {
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
+
+        <video autoPlay={true} id="videoElement" style={{width:300,height:300}} />
 
         <p className={styles.description}>
           Get started by editing{' '}
