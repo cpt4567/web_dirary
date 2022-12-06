@@ -8,7 +8,18 @@ export default function Vedeo() {
         autoPlay : true,
         style:{ width:300 , height:300 }
     }
+/* 
 
+        let stream = new MediaStream() ;
+    
+        let source = new MediaSource();
+
+https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+
+https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API
+
+https://curryyou.tistory.com/443
+*/
     /**
      * @url https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
      * @url https://developer.mozilla.org/en-US/docs/Web/API/Navigator
