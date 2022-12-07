@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 export default function Vedeo() {
     
@@ -34,7 +34,9 @@ https://curryyou.tistory.com/443
         let source = new MediaSource();
     
       }, [videoElement]) */
+    
       
+/* 
       const onReadCam = async () => {
 
         try {
@@ -50,13 +52,37 @@ https://curryyou.tistory.com/443
             console.log(err);
         }
 
-    }    
+    }     */
+
+    const onReadCam = async () => {
+
+        try {     
+            const stream = await navigator.mediaDevices.getUserMedia( { video : true , audio : true } );
+                
+            if(videoElement.current){
+                
+                videoElement.current.srcObject = stream ;
+            }
+
+        } 
+
+        catch (err) { 
+            console.log(err);
+        }
+
+    }
+
+    useEffect(() => {
+        /* if (navigator.mediaDevices.getUserMedia) */
+            onReadCam()
+    }, [])
+    
 
     return (
         <>
-        <video { ...option }  ref={ videoElement } />
-        <button onClick={onReadCam}>assaas</button>
-        </>
+        <video { ...option } ref={ videoElement } />
+{/*         <button onClick={onReadCam}>assaas</button>
+ */}        </>
     )
       
 }
