@@ -1,10 +1,19 @@
+import { Theme } from "@mui/material";
 import { Container } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
+import Icon from "../components/icon";
 import { getWebCam } from "./api";
 
-export default function VideoComponent() {
+
+interface Props {
+    value : number
+    theme : Theme
+}
+
+
+export default function VideoComponent( { value , theme } : Props) {
     
     const videoElement = useRef< HTMLVideoElement | null >( null )
 
@@ -14,12 +23,14 @@ export default function VideoComponent() {
 
     const [captureEvent,setCaptureEvent] = useState<any> ()
 
-    const [test, setTest] = useState<any[]>([])
-    const [test2, setTest2] = useState<any[]>([])
+
+    const [recode , setRecode] = useState<{ webcam : Array<any> , display : Array<any> }>({webcam:[],display:[]})
+    
 
     const option = {
         video:{
             autoPlay : true,
+            width:100
         }
     }
 
@@ -50,13 +61,12 @@ export default function VideoComponent() {
                 
                 let reader = new MediaRecorder(stream);
                 
-                reader.ondataavailable = (event)=>{
-                    console.log(event);
-                    
+                reader.ondataavailable = (event)=>{                                        
                     // 녹화 데이터(Blob)가 들어올 때마다 배열에 담아두기
-                    setTest( test.concat(event.data) );
+                    setRecode((pre) => ( { display : pre.display, webcam : pre.webcam.concat(event.data) }) );
                 }             
             
+                
 
                 setVideoEvent( reader )
                                 
@@ -83,17 +93,12 @@ export default function VideoComponent() {
                                 
                 reader.ondataavailable = (event)=>{    
                     // 녹화 데이터(Blob)가 들어올 때마다 배열에 담아두기
-                    setTest2( test2.concat(event.data) );
+                    setRecode((pre) => ( { webcam : pre.webcam, display : pre.display.concat(event.data) }) );
                 }             
 
                 setCaptureEvent( reader )
 
-                
-
             }
-
-
-
         } 
         catch (err) {
           console.error(`Error: ${err}`);
@@ -102,39 +107,43 @@ export default function VideoComponent() {
 
     }
 
+    const onAdd = () => {
 
-    useEffect(() => {
-        onReadCam();
-        onReadDisplayCapture();
-        
-        
-       }, [])
+        onReadCam()
+        onReadDisplayCapture()
+
+    }
     
-
-
     const onStart = () => {
-        videoEvent.start()
-        captureEvent.start()
+
+        videoEvent.start(()=>{})
+        captureEvent.start(()=>{})
+        
+    } 
+    
+    
+    const onPause = () => {
+
+        videoEvent.pause(()=>{})
+        captureEvent.pause(()=>{})
         
     }
 
-    const onResume = ()=> {
-
-        videoEvent.resume()
-        captureEvent.resume()
-        
+    const onResume = () => {
+        videoEvent.resume(()=>{})
+        captureEvent.resume(()=>{})
     }
 
     const onEnd = () => {
         
-        captureEvent.stop()
-        videoEvent.stop()
+        captureEvent.stop(()=>{})
+        videoEvent.stop(()=>{})
 
     }    
 
     const onDownload = ()=>{
         
-        let downloadDom = document.createElement("a")
+        /* let downloadDom = document.createElement("a")
 
         const downloadfile = new Blob([test2[0]],{type:"video/avi"})
 
@@ -144,43 +153,23 @@ export default function VideoComponent() {
 
         downloadDom.click();
         
-        downloadDom.remove();
+        downloadDom.remove(); */
         
     }
-
     
 
     return (
         <Container >
-
-        <Box className={"container"} >
-
-            <Box className="container_items">
-                <span>sasaSsaas</span>
-            
+          
                 <video className="webcam_content" { ...option.video } ref={ videoElement } />
                 <video className="capture_content" { ...option.video } ref={ captureElement } />
-            </Box>
-            
-            <Box className="container_items" >
-                <span>sasaSsaas</span>
-
-
-            </Box>
-
-            <Box className="container_items" >
-                <span>sasaSsaas</span>
-
-            </Box>
-
-        </Box>
-
-                <footer >
-                    <button onClick={onStart}>start</button>
-                    <button onClick={onEnd}>end</button>
-                    <button onClick={onResume}>resume</button>
-                    <button onClick={onDownload}>download</button>
-                </footer>
+      
+                <Icon
+                    value={value}
+                    theme={theme}
+                    event={{onAdd,onStart,onPause,onResume,onEnd}}
+                    state={{videoEvent,captureEvent}}
+                />
 
         </Container>
     )

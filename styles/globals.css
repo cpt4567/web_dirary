@@ -8,62 +8,7 @@ height:100%;
 
 }
 
-.main {
-    width:100%;
-}
 
-.container {
-    display: flex;
-    width:100%;
-    justify-content:space-around;
-
-}
-
-.container > .container_items{
-    margin-top: 10px;
-    background:#fff;
-    width:30%;
-    border-radius: 5px 5px ;
-    border:10px;
-/*     box-shadow: 10px 12px 1px 1px rgb(244, 244, 244);
- */}
-
-
-
-
-/* 키프레임 이름 = 애니메이션 이름 */
-@-webkit-keyframes jaehee {
-    0% {
-      width:100px;
-    }
-    100% {
-      width:300px;
-    }
-  }
-
-
-.container > .container_items > span {
-    display:inline-block;
-    width:100%;
-    margin-top: 20px;
-    margin-bottom:20px;
-    text-align:center;
-    color: rgb(144, 139, 139);
-    font-size:20px;
-    font-weight:30px;
-    border-bottom: 1px solid rgb(144, 139, 139);
-
-    /* 애니메이션 이름 */
-    animation-name: jaehee;
-    animation-duration:1s;
-    animation-duration: leaner;
-    animation-iteration-count:3;
-    animation-direction:alternate;
-    animation-fill-mode: forwards;
-}
-
-
-.container_items > video {
-    width:100%;
-    
+video {
+    width:50%;
 }
