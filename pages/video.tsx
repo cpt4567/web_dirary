@@ -1,10 +1,9 @@
 import { Theme } from "@mui/material";
 import { Container } from "@mui/material";
-import { Box } from "@mui/system";
-import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Icon from "../components/icon";
-import { getWebCam } from "./api";
+import { useAlert } from "./hook/useAlert";
+import { useRecoding } from "./hook/useRecoding";
 
 
 interface Props {
@@ -19,12 +18,31 @@ export default function VideoComponent( { value , theme } : Props) {
 
     const captureElement = useRef< HTMLVideoElement | null >( null )
 
-    const [videoEvent,setVideoEvent] = useState<any> ()
+    const [videoEvent,setVideoEvent] = useState<any> ( null )
 
-    const [captureEvent,setCaptureEvent] = useState<any> ()
-
+    const [captureEvent,setCaptureEvent] = useState<any> ( null )
 
     const [recode , setRecode] = useState<{ webcam : Array<any> , display : Array<any> }>({webcam:[],display:[]})
+    
+    const [ onAlertOpen , AlertRenderer ] = useAlert({})
+
+    const endEvent = () => {
+
+        setRecode({ webcam : [ ] , display : [ ] })
+
+
+        if(videoElement.current && captureElement.current ){
+
+            videoElement.current.srcObject = null ;
+
+            captureElement.current.srcObject = null ;
+        }
+
+        onAlertOpen()
+    }
+    
+    const [ eventObject , recodingState , setRecodingState ] = useRecoding( { video : videoEvent , display : captureEvent ,endEvent : endEvent })
+
     
 
     const option = {
@@ -40,14 +58,6 @@ export default function VideoComponent( { value , theme } : Props) {
         },
         audio: false
     };
-
-
-    //이 기사에서는 Screen Capture API WebRTC https://developer.mozilla.org/en-US/docs/Web/API/Screen_Capture_API/Using_Screen_Capture
-/**
-*  @url  https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API
- *   
-     * */ 
-
 
 
     const onReadCam = async () => {
@@ -86,7 +96,7 @@ export default function VideoComponent( { value , theme } : Props) {
 
             if( captureElement.current){
                 
-                const captureStream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+                const captureStream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions,);
                 captureElement.current.srcObject = captureStream ;
 
                 let reader = new MediaRecorder(captureStream);
@@ -111,35 +121,8 @@ export default function VideoComponent( { value , theme } : Props) {
 
         onReadCam()
         onReadDisplayCapture()
-
+        setRecodingState("inactive")
     }
-    
-    const onStart = () => {
-
-        videoEvent.start(()=>{})
-        captureEvent.start(()=>{})
-        
-    } 
-    
-    
-    const onPause = () => {
-
-        videoEvent.pause(()=>{})
-        captureEvent.pause(()=>{})
-        
-    }
-
-    const onResume = () => {
-        videoEvent.resume(()=>{})
-        captureEvent.resume(()=>{})
-    }
-
-    const onEnd = () => {
-        
-        captureEvent.stop(()=>{})
-        videoEvent.stop(()=>{})
-
-    }    
 
     const onDownload = ()=>{
         
@@ -161,15 +144,17 @@ export default function VideoComponent( { value , theme } : Props) {
     return (
         <Container >
           
-                <video className="webcam_content" { ...option.video } ref={ videoElement } />
-                <video className="capture_content" { ...option.video } ref={ captureElement } />
+                <video { ...option.video } ref={ videoElement } />
+                <video { ...option.video } ref={ captureElement } />
       
                 <Icon
                     value={value}
                     theme={theme}
-                    event={{onAdd,onStart,onPause,onResume,onEnd}}
-                    state={{videoEvent,captureEvent}}
+                    event={{ onAdd , ...eventObject }}
+                    state={recodingState}
                 />
+
+                {AlertRenderer}
 
         </Container>
     )

@@ -1,8 +1,8 @@
 import { Container } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useState } from "react";
+import { useAlert } from '../pages/hook/useAlert';
 import VideoComponent from '../pages/video';
-import Icon from './icon';
 import { TabPanel } from "./tabpanel";
 import Top from "./top";
 
@@ -16,6 +16,7 @@ export default function Layout() {
       };
     
     return (
+        
         <Container
         sx={{
           bgcolor: 'background.paper',
@@ -23,23 +24,20 @@ export default function Layout() {
           height:"100%",
           minHeight:400
         }}
-      >
+        >
+    
         <Top 
          value={value}
          handleChange={handleChange}
         />
-  
+
           <TabPanel value={value} index={0} dir={theme.direction}>
               <VideoComponent value={value} theme={theme}/>
           </TabPanel>
           
           <TabPanel value={value} index={1} dir={theme.direction}>
           </TabPanel>
-          
-          <TabPanel value={value} index={2} dir={theme.direction}>
-          </TabPanel>
-        
-       
+                 
       </Container>
     )
 }

@@ -29,9 +29,10 @@ export default function Top({value,handleChange}:Prop) {
           variant="fullWidth"
           aria-label="action tabs example"
         >
-          <Tab label="Item One" {...a11yProps(0)} />
-          <Tab label="Item Two" {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
+
+          <Tab label="기록하기" {...a11yProps(0)} />
+          <Tab label="조회하기" {...a11yProps(1)} />
+
         </Tabs>
       </AppBar>
     )

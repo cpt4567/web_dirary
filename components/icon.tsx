@@ -12,7 +12,7 @@ interface Props {
     value : number
     theme : Theme
     event : videoEventProps
-    state ? : videoStateProps
+    state ? : string
 }
 
 export default function Icon( { value , theme , event , state } : Props ) {
@@ -103,10 +103,8 @@ export default function Icon( { value , theme , event , state } : Props ) {
     const videoFabsRenderer = () => {
         
         if(state){
-
-            const { videoEvent , captureEvent } = state ;
             
-            if( !videoEvent && !captureEvent ) {
+            if( state === "none" ) {
                 
                 return (
                 <Zoom
@@ -124,15 +122,8 @@ export default function Icon( { value , theme , event , state } : Props ) {
             )
             }
 
-            else if(videoEvent && captureEvent){
+            else if(state === "inactive"){
 
-                const startData = Object.entries(videoFabs).filter(([ key , _ ])=> key !== "start" && key !== "add" && key !== "resume" )
-                const pauseData = Object.entries(videoFabs).filter(([ key , _ ])=> key !== "start" && key !== "add" )                
-
-                const { state : videoState } = videoEvent
-                const { state : captureState } = captureEvent
-                
-                    if( videoState === "inactive" && captureState === "inactive" ){
                         return (
                         <Zoom
                             in={value === 0}
@@ -147,44 +138,49 @@ export default function Icon( { value , theme , event , state } : Props ) {
         
                         </Zoom>
                         )
-                    }
-                    else if( videoState === "paused" && captureState === "paused"){
-                        return (
-                            <>
-                            { pauseData.map(([_key,_value],index)=> 
-                            <Zoom
-                              key={index}
-                              in={value === 0}
-                              timeout={transitionDuration}
-                              style={{transitionDelay: `${value === 0 ? transitionDuration.exit : 0}ms`}}
-                             unmountOnExit
-                            >
-                            
-                                <Fab sx={_value.sx} onClick={_value.event}>{_value.Icon}</Fab>
-                
-                            </Zoom>
-                            )}
-                            </>)
-                    }
+            }
+            else if( state === "paused"){
 
-                    else{
-                        return (
-                        <>
-                        { startData.map(([_key,_value],index)=> 
-                        <Zoom
-                          key={index}
-                          in={value === 0}
-                          timeout={transitionDuration}
-                          style={{transitionDelay: `${value === 0 ? transitionDuration.exit : 0}ms`}}
-                         unmountOnExit
-                        >
-                        
-                            <Fab sx={_value.sx} onClick={_value.event}>{_value.Icon}</Fab>
+                const pauseData = Object.entries(videoFabs).filter(([ key , _ ])=> key !== "start" && key !== "add" )                
+
+                return (
+                    <>
+                    { pauseData.map(([_key,_value],index)=> 
+                    <Zoom
+                      key={index}
+                      in={value === 0}
+                      timeout={transitionDuration}
+                      style={{transitionDelay: `${value === 0 ? transitionDuration.exit : 0}ms`}}
+                     unmountOnExit
+                    >
+                    
+                        <Fab sx={_value.sx} onClick={_value.event}>{_value.Icon}</Fab>
+        
+                    </Zoom>
+                    )}
+                    </>)
+            }
+
+                    
+            else{
+                const startData = Object.entries(videoFabs).filter(([ key , _ ])=> key !== "start" && key !== "add" && key !== "resume" )
+
+                return (
+                <>
+                { startData.map(([_key,_value],index)=> 
+                <Zoom
+                  key={index}
+                  in={value === 0}
+                  timeout={transitionDuration}
+                  style={{transitionDelay: `${value === 0 ? transitionDuration.exit : 0}ms`}}
+                 unmountOnExit
+                >
+                
+                    <Fab sx={_value.sx} onClick={_value.event}>{_value.Icon}</Fab>
             
-                        </Zoom>
-                        )}
-                        </>)
-                    }
+                </Zoom>
+                )}
+                </>)
 
             }
             
