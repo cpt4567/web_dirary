@@ -1,15 +1,17 @@
 import axios from "axios";
+import { Readable } from 'stream';
 
-export const auth = axios.create({baseURL:"localhost:4000" })
+export const auth = axios.create({baseURL:"http://localhost:4000" })
 
+export const fetchBaseURL = "http://localhost:4000" ;
 
 export const getWebCam = () => {
+  
+    return fetch(`${fetchBaseURL}/webcam`)
 
-    return auth.get("/webcam")
-    
 }
 
-const postWebCam = (data:any) => {
+export const postWebCam = (data:any) => {
 
     let axiosConfig = {
         headers: {
@@ -25,12 +27,12 @@ const postWebCam = (data:any) => {
 
 }
 
-const getCaptureDisplay = () => {
+export const getCaptureDisplay = () => {
 
     return auth.get("/display")
 }
 
-const postCaptureDisplay = (data:any) => {
+export const postCaptureDisplay = (data:any) => {
 
     let axiosConfig = {
         headers: {
@@ -42,5 +44,5 @@ const postCaptureDisplay = (data:any) => {
 
     formData.append("file",data)
     
-    return auth.post("", formData ,axiosConfig )
+    return auth.post("/display", formData ,axiosConfig )
 }

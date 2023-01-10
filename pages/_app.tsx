@@ -5,9 +5,10 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return(
     <>
-    <link rel="preconnect" href="https://fonts.googleapis.com"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin='true'/>
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital@1&display=swap" rel="stylesheet"/>
+    
+    <meta charSet='utf-8'/>
+    <meta httpEquiv="X-UA-Compatible" content="IE=Edge; chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <Component {...pageProps} />
     </>

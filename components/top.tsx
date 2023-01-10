@@ -6,7 +6,6 @@ interface Prop {
     handleChange: (event: unknown, newValue: number) => void
 }
 
-
 export default function Top({value,handleChange}:Prop) {
 
 

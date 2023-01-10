@@ -1,8 +1,10 @@
 import { Container } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useState } from "react";
+import axios from 'axios';
+import { useEffect, useState } from "react";
 import { useAlert } from '../pages/hook/useAlert';
-import VideoComponent from '../pages/video';
+import WriteComponent from '../pages/write';
+import RaadComponent from '../pages/read';
 import { TabPanel } from "./tabpanel";
 import Top from "./top";
 
@@ -15,6 +17,8 @@ export default function Layout() {
         setValue(newValue);
       };
     
+    
+
     return (
         
         <Container
@@ -32,10 +36,11 @@ export default function Layout() {
         />
 
           <TabPanel value={value} index={0} dir={theme.direction}>
-              <VideoComponent value={value} theme={theme}/>
+              <WriteComponent value={value} theme={theme}/>
           </TabPanel>
           
           <TabPanel value={value} index={1} dir={theme.direction}>
+              <RaadComponent/>
           </TabPanel>
                  
       </Container>

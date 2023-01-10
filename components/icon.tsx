@@ -7,11 +7,13 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseCircleFilledIcon from '@mui/icons-material/PauseCircleFilled';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { useEffect, useMemo } from 'react';
+
+
+
 interface Props {
     value : number
     theme : Theme
-    event : videoEventProps
+    event : videoEventProps 
     state ? : string
 }
 

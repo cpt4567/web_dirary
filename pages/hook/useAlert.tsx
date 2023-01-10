@@ -1,13 +1,13 @@
 import { useState } from "react";
-import Alert from "../../components/alert";
+import Alert, { inputType } from "../../components/alert";
 
 interface Props {
-    
+    onSave : ( data : inputType ) => void 
 }
 
 type ReturnType = [ ()=> void , JSX.Element ]
 
-export const useAlert = ( { } ) : ReturnType  => {
+export const useAlert = ( { onSave } : Props ) : ReturnType  => {
 
     const [open, setOpen] = useState(false);
     
@@ -22,8 +22,9 @@ export const useAlert = ( { } ) : ReturnType  => {
 
         return(
             <Alert
-            open={open}
-            handleClose={handleClose}
+              open={open}
+              onSave={onSave}
+              onClose={handleClose}
         />
         ) 
     }

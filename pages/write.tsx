@@ -1,7 +1,8 @@
 import { Theme } from "@mui/material";
 import { Container } from "@mui/material";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Icon from "../components/icon";
+import { postCaptureDisplay, postWebCam } from "./api";
 import { useAlert } from "./hook/useAlert";
 import { useRecoding } from "./hook/useRecoding";
 
@@ -12,7 +13,7 @@ interface Props {
 }
 
 
-export default function VideoComponent( { value , theme } : Props) {
+export default function WriteComponent( { value , theme } : Props) {
     
     const videoElement = useRef< HTMLVideoElement | null >( null )
 
@@ -24,7 +25,21 @@ export default function VideoComponent( { value , theme } : Props) {
 
     const [recode , setRecode] = useState<{ webcam : Array<any> , display : Array<any> }>({webcam:[],display:[]})
     
-    const [ onAlertOpen , AlertRenderer ] = useAlert({})
+    const onSave =  () => {
+        
+        const webcamUpload = new Blob([recode.webcam[0]],{type:"video/mp4"})
+
+        const captureUpload = new Blob([recode.display[0]],{type:"video/mp4"})
+        
+         postCaptureDisplay(captureUpload,);
+        
+         postWebCam(webcamUpload,);
+
+    }
+
+    const [ onAlertOpen , AlertRenderer ] = useAlert({ onSave })
+
+
 
     const endEvent = () => {
 
@@ -43,7 +58,6 @@ export default function VideoComponent( { value , theme } : Props) {
     
     const [ eventObject , recodingState , setRecodingState ] = useRecoding( { video : videoEvent , display : captureEvent ,endEvent : endEvent })
 
-    
 
     const option = {
         video:{
@@ -75,8 +89,6 @@ export default function VideoComponent( { value , theme } : Props) {
                     // 녹화 데이터(Blob)가 들어올 때마다 배열에 담아두기
                     setRecode((pre) => ( { display : pre.display, webcam : pre.webcam.concat(event.data) }) );
                 }             
-            
-                
 
                 setVideoEvent( reader )
                                 
@@ -123,23 +135,6 @@ export default function VideoComponent( { value , theme } : Props) {
         onReadDisplayCapture()
         setRecodingState("inactive")
     }
-
-    const onDownload = ()=>{
-        
-        /* let downloadDom = document.createElement("a")
-
-        const downloadfile = new Blob([test2[0]],{type:"video/avi"})
-
-        const downloadUrl = window.URL.createObjectURL(downloadfile); 
-    
-        downloadDom.href = downloadUrl
-
-        downloadDom.click();
-        
-        downloadDom.remove(); */
-        
-    }
-    
 
     return (
         <Container >
