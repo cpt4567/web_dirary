@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Readable } from 'stream';
+import { saveParamsProps } from "../../@types";
 
 export const auth = axios.create({baseURL:"http://localhost:4000" })
 
@@ -11,7 +12,7 @@ export const getWebCam = () => {
 
 }
 
-export const postWebCam = (data:any) => {
+export const postWebCam = ( video : Blob , data : saveParamsProps ) => {
 
     let axiosConfig = {
         headers: {
@@ -21,18 +22,26 @@ export const postWebCam = (data:any) => {
 
     let formData = new FormData();
 
-    formData.append("file",data)
+    formData.append("file",video)
+
+    formData.append("obj",JSON.stringify(data) )
     
     return auth.post("/webcam", formData ,axiosConfig )
 
 }
 
-export const getCaptureDisplay = () => {
+export const getWebcamList = () => {
 
-    return auth.get("/display")
+    return auth.get("/webcam_list")
 }
 
-export const postCaptureDisplay = (data:any) => {
+
+export const getCaptureDisplay = () => {
+
+    return fetch(`${fetchBaseURL}/display`)
+}
+
+export const postCaptureDisplay = ( video : Blob , data : saveParamsProps ) => {
 
     let axiosConfig = {
         headers: {
@@ -42,7 +51,15 @@ export const postCaptureDisplay = (data:any) => {
 
     let formData = new FormData();
 
-    formData.append("file",data)
+    formData.append("file",video)
+
+    formData.append("obj", JSON.stringify(data) )
     
     return auth.post("/display", formData ,axiosConfig )
+}
+
+
+export const getDisplayList = () => {
+
+    return auth.get("/display_list")
 }

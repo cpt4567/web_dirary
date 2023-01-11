@@ -2,15 +2,18 @@ import { Box, Container } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import Canlender from "../components/calender";
 import TimeLine from "../components/timeline";
-import { getWebCam } from "./api"
+import { getWebCam, getWebcamList } from "./api"
 
 export default function ReadComponent () {
 
-    const [data , setData ] = useState<any>()
+    const [ data , setData ] = useState<any>([])
 
     const videoElement = useRef< HTMLVideoElement | null >( null );
 
-    
+    useEffect(()=>{
+        getWebcamList().then((res)=> setData(res.data) )
+    },[])
+
      const test = async () => {
 
         const res = await getWebCam();
@@ -45,14 +48,15 @@ export default function ReadComponent () {
         }
 
     }
-
+    
 
     return (
         <>
         <Container sx={{display:"flex", justifyContent:"space-between"}}>
 
-            <Canlender/>
-            <TimeLine/>
+            <Canlender />
+            
+            <TimeLine datas = {data} />
 
         </Container>
  

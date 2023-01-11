@@ -1,4 +1,5 @@
 import * as React from 'react';
+import List from '@mui/material/List';
 import Timeline from '@mui/lab/Timeline';
 import TimelineItem from '@mui/lab/TimelineItem';
 import TimelineSeparator from '@mui/lab/TimelineSeparator';
@@ -6,9 +7,18 @@ import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent, { timelineContentClasses } from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
-import { Box } from '@mui/material';
+import { Box, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import { writeDataType } from '../@types';
+import dayjs from 'dayjs';
 
-export default function TimeLine() {
+interface Props {
+  datas : writeDataType[]
+}
+
+
+export default function TimeLine( { datas } : Props ) {
+  
+
   return (
     <Box style={{width:"50%",maxHeight:300,overflowY:"scroll"}}>
 
@@ -19,108 +29,54 @@ export default function TimeLine() {
         },
       }}
     >
-      
-      <TimelineItem>
-        <TimelineOppositeContent color="textSecondary">
-          09:30 am
-        </TimelineOppositeContent>
-        <TimelineSeparator>
-          <TimelineDot />
-          <TimelineConnector />
-        </TimelineSeparator>
-        <TimelineContent>Eat</TimelineContent>
-      </TimelineItem>
-    
-      <TimelineItem>
-        <TimelineOppositeContent color="textSecondary">
-          10:00 am
-        </TimelineOppositeContent>
-        <TimelineSeparator>
-          <TimelineDot />
-        </TimelineSeparator>
-        <TimelineContent>Code</TimelineContent>
-      </TimelineItem>
+    { datas?.map(( data , index )=> {
 
-      <TimelineItem>
-        <TimelineOppositeContent color="textSecondary">
-          10:00 am
-        </TimelineOppositeContent>
-        <TimelineSeparator>
-          <TimelineDot />
-        </TimelineSeparator>
-        <TimelineContent>Code</TimelineContent>
-      </TimelineItem>
+      const { title , recode } = data.datas;
 
-      <TimelineItem>
-        <TimelineOppositeContent color="textSecondary">
-          10:00 am
-        </TimelineOppositeContent>
-        <TimelineSeparator>
-          <TimelineDot />
-        </TimelineSeparator>
-        <TimelineContent>Code</TimelineContent>
-      </TimelineItem>
+      const { start , end } = data.date;
 
-      <TimelineItem>
+      return (  
+      <TimelineItem key={data.datas.title}>
         <TimelineOppositeContent color="textSecondary">
-          10:00 am
-        </TimelineOppositeContent>
-        <TimelineSeparator>
-          <TimelineDot />
-        </TimelineSeparator>
-        <TimelineContent>Code</TimelineContent>
-      </TimelineItem>
 
-      <TimelineItem>
-        <TimelineOppositeContent color="textSecondary">
-          10:00 am
-        </TimelineOppositeContent>
-        <TimelineSeparator>
-          <TimelineDot />
-        </TimelineSeparator>
-        <TimelineContent>Code</TimelineContent>
-      </TimelineItem>
+        <List sx={{width:300}}>
+          <ListItem disablePadding>
+            <ListItemButton>
+            
+              <ListItemText primary={`${end}`}/>
 
-      <TimelineItem>
-        <TimelineOppositeContent color="textSecondary">
-          10:00 am
-        </TimelineOppositeContent>
-        <TimelineSeparator>
-          <TimelineDot />
-        </TimelineSeparator>
-        <TimelineContent>Code</TimelineContent>
-      </TimelineItem>
+            </ListItemButton>
+          </ListItem>
+        </List>
 
-      <TimelineItem>
-        <TimelineOppositeContent color="textSecondary">
-          10:00 am
         </TimelineOppositeContent>
+       
         <TimelineSeparator>
-          <TimelineDot />
+          <TimelineDot/>
+        {index !== datas.length && <TimelineConnector/> }
         </TimelineSeparator>
-        <TimelineContent>Code</TimelineContent>
-      </TimelineItem>
+        
+        <TimelineContent>
 
-      <TimelineItem>
-        <TimelineOppositeContent color="textSecondary">
-          10:00 am
-        </TimelineOppositeContent>
-        <TimelineSeparator>
-          <TimelineDot />
-        </TimelineSeparator>
-        <TimelineContent>Code</TimelineContent>
-      </TimelineItem>
+        <List sx={{width:300}}>
+          <ListItem disablePadding>         
 
-      <TimelineItem>
-        <TimelineOppositeContent color="textSecondary">
-          10:00 am
-        </TimelineOppositeContent>
-        <TimelineSeparator>
-          <TimelineDot />
-        </TimelineSeparator>
-        <TimelineContent>Code</TimelineContent>
+              <ListItemText primary={` ${title} `}/>
+
+              <ListItemText primary={` ${recode} `}/>
+
+          </ListItem>
+          <ListItem disablePadding>         
+
+
+          </ListItem>
+        </List>
+
+        </TimelineContent>
+
       </TimelineItem>
-      
+    )}
+    )}
       
     </Timeline>
     </Box>

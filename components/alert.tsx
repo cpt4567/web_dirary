@@ -34,9 +34,7 @@ export type inputType = {
 
 export default function Alert ({open, onSave , onClose }:Props) {
 
-    
-
-    const [ text , setText ] = useState<inputType>({ title: "" , recode : "" })
+    const [ text , setText ] = useState<inputType>({ title: "" , recode : ""  })
     
     const [ warnRenderer , openwarm ] = useWarn();
     

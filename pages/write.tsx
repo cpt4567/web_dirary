@@ -1,6 +1,7 @@
 import { Theme } from "@mui/material";
 import { Container } from "@mui/material";
 import { useRef, useState } from "react";
+import { inputType } from "../components/alert";
 import Icon from "../components/icon";
 import { postCaptureDisplay, postWebCam } from "./api";
 import { useAlert } from "./hook/useAlert";
@@ -25,15 +26,15 @@ export default function WriteComponent( { value , theme } : Props) {
 
     const [recode , setRecode] = useState<{ webcam : Array<any> , display : Array<any> }>({webcam:[],display:[]})
     
-    const onSave =  () => {
+    const onSave =  ( data : inputType ) => {
         
         const webcamUpload = new Blob([recode.webcam[0]],{type:"video/mp4"})
 
         const captureUpload = new Blob([recode.display[0]],{type:"video/mp4"})
+                
+         postCaptureDisplay(captureUpload,{date : recodingDate , datas : data });
         
-         postCaptureDisplay(captureUpload,);
-        
-         postWebCam(webcamUpload,);
+         postWebCam(webcamUpload,{date:recodingDate , datas : data });
 
     }
 
@@ -56,7 +57,7 @@ export default function WriteComponent( { value , theme } : Props) {
         onAlertOpen()
     }
     
-    const [ eventObject , recodingState , setRecodingState ] = useRecoding( { video : videoEvent , display : captureEvent ,endEvent : endEvent })
+    const [ eventObject , recodingState , setRecodingState , recodingDate ] = useRecoding( { video : videoEvent , display : captureEvent ,endEvent : endEvent  })
 
 
     const option = {
