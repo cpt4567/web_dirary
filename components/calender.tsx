@@ -24,10 +24,12 @@ export default function Canlander( { onDayChange } : Props ) {
   
   return (
     <Box style={{width:"50%"}}>
+      
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <StaticDatePicker
-        orientation="landscape"
-        openTo="day"
+       /*  orientation="landscape" */       
+       displayStaticWrapperAs="desktop"
+        openTo="year"
         value={value}
         shouldDisableDate={isWeekend}
         onChange={(newValue) => {
