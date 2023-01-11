@@ -6,9 +6,11 @@ export const auth = axios.create({baseURL:"http://localhost:4000" })
 
 export const fetchBaseURL = "http://localhost:4000" ;
 
-export const getWebCam = () => {
+export const getWebCam = (data:string) => {
   
-    return fetch(`${fetchBaseURL}/webcam`)
+    const url = `${fetchBaseURL}/webcam/{fileName}`.replace("{fileName}",data)
+
+    return fetch(url)
 
 }
 
@@ -35,10 +37,11 @@ export const getWebcamList = () => {
     return auth.get("/webcam_list")
 }
 
+export const getCaptureDisplay = (data:string) => {
 
-export const getCaptureDisplay = () => {
+    const url = `${fetchBaseURL}/display/{fileName}`.replace("{fileName}",data)
 
-    return fetch(`${fetchBaseURL}/display`)
+    return fetch(url)
 }
 
 export const postCaptureDisplay = ( video : Blob , data : saveParamsProps ) => {
@@ -59,7 +62,3 @@ export const postCaptureDisplay = ( video : Blob , data : saveParamsProps ) => {
 }
 
 
-export const getDisplayList = () => {
-
-    return auth.get("/display_list")
-}

@@ -6,6 +6,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import { Box } from '@mui/system';
 
+interface Props {
+  onDayChange: (newValue: dayjs.Dayjs | null) => void
+}
+
 const isWeekend = (date: Dayjs) => {
   const day = date.day();
 
@@ -13,9 +17,11 @@ const isWeekend = (date: Dayjs) => {
 };
 
 
-export default function Canlander( ) {
-  const [value, setValue] = React.useState<Dayjs | null>(dayjs('2022-04-07'));
+export default function Canlander( { onDayChange } : Props ) {
 
+  const [value, setValue] = React.useState<Dayjs | null>(dayjs(new Date()));
+
+  
   return (
     <Box style={{width:"50%"}}>
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -25,6 +31,7 @@ export default function Canlander( ) {
         value={value}
         shouldDisableDate={isWeekend}
         onChange={(newValue) => {
+          onDayChange(newValue);
           setValue(newValue);
         }}
         renderInput={(params) => <TextField {...params} />}

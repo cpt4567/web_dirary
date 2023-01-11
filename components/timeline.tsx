@@ -13,10 +13,11 @@ import dayjs from 'dayjs';
 
 interface Props {
   datas : writeDataType[]
+  onReadVideo:(fileName:string)=> void
 }
 
 
-export default function TimeLine( { datas } : Props ) {
+export default function TimeLine( { datas , onReadVideo } : Props ) {
   
 
   return (
@@ -33,7 +34,7 @@ export default function TimeLine( { datas } : Props ) {
 
       const { title , recode } = data.datas;
 
-      const { start , end } = data.date;
+      const { end } = data.date;
 
       return (  
       <TimelineItem key={data.datas.title}>
@@ -43,7 +44,7 @@ export default function TimeLine( { datas } : Props ) {
           <ListItem disablePadding>
             <ListItemButton>
             
-              <ListItemText primary={`${end}`}/>
+              <ListItemText primary={`${end}`} onClick={()=>{onReadVideo(end)}}/>
 
             </ListItemButton>
           </ListItem>
@@ -53,7 +54,7 @@ export default function TimeLine( { datas } : Props ) {
        
         <TimelineSeparator>
           <TimelineDot/>
-        {index !== datas.length && <TimelineConnector/> }
+        { index + 1 !== datas.length &&  <TimelineConnector/> }
         </TimelineSeparator>
         
         <TimelineContent>

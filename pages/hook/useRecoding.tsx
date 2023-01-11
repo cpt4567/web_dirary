@@ -33,7 +33,7 @@ export const useRecoding = ( { video , display , endEvent } : Props ) : ReturnTy
 
     const onStart = () => {
         
-        const day = dayjs(new Date()).format("YYYY-MM-DD H:MM:ss ")
+        const day = dayjs(new Date()).format("YYYY-MM-DD-H:MM:ss")
 
         eventObject.video.start()
         eventObject.display.start()
@@ -68,7 +68,7 @@ export const useRecoding = ( { video , display , endEvent } : Props ) : ReturnTy
 
     const onEnd = () => {
         
-        const day = dayjs(new Date()).format("YYYY-MM-DD H:MM:ss ")
+        const day = dayjs(new Date()).format("YYYY-MM-DD-H:MM:ss")
 
         eventObject.display.stop()
         eventObject.video.stop()
